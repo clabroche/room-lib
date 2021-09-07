@@ -1,0 +1,23 @@
+{
+  "name": "@iryu54/roomlib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bootstrap": "lerna bootstrap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clabroche/room-lib.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clabroche/room-lib/issues"
+  },
+  "homepage": "https://github.com/clabroche/room-lib#readme",
+  "devDependencies": {
+    "@types/node": "^16.7.13"
+  }
+}
