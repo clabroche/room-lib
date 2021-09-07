@@ -11,4 +11,4 @@ module.exports = {
     Rooms: require('./models/Rooms'),
   },
   sockets: require('./sockets')
-} 
+}
