@@ -15,6 +15,7 @@ module.exports = {
         room.join(user)
         this.joinRoom(room.id, user)
         this.updateUsers(room.id, room.users)
+        this.updateScoring(room.id, room.scoring)
       })
       socket.on('disconnect', () => {
         const user = Users.getUserFromSocket(socket)
@@ -23,6 +24,7 @@ module.exports = {
           if(room) {
             room.unjoin(user)
             this.updateUsers(room.id, room.users)
+            // this.updateScoring(room.id, room.scoring)
           }
         }
       })
@@ -36,6 +38,9 @@ module.exports = {
   },
   updateCreator(roomId, creatorId) {
     this.io.to(roomId).emit('update:creatorId', creatorId)
+  },
+  updateScoring(roomId, scoring) {
+    this.io.to(roomId).emit('update:scoring', scoring)
   },
   /**
    * @param {String} roomId 

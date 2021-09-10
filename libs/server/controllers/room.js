@@ -4,12 +4,16 @@ const Rooms = require('../models/Rooms')
 const Users = require('../models/Users');
 const router = express.Router();
 const uuid = require('uuid').v4;
-function getRoutes(Game) {
+function getRoutes(Game, excludeFields = []) {
+  function cleanRoom(room) {
+    excludeFields.forEach((prop) => deletePropertyPath(room,prop))
+    return JSON.parse(JSON.stringify(room))
+  }
   router.get('/:roomId', (req, res, next) => {
     const { roomId } = req.params
     const room = Rooms.get(roomId)
     if(room) {
-      res.json(room)
+      res.json(cleanRoom(room))
     } else {
       res.status(404).send('Room not found')
     }
@@ -20,7 +24,7 @@ function getRoutes(Game) {
     const user = Users.getOrCreate(username)
     const room = Rooms.getOrCreate(roomId, user.username)
     room.join(user)
-    res.json(room)
+    res.json(cleanRoom(room))
   })
   router.post('/create/:username/:roomId', (req, res, next) => {
     const { username } = req.params
@@ -28,7 +32,7 @@ function getRoutes(Game) {
     const user = Users.getOrCreate(username)
     const room = Rooms.getOrCreate(roomId, user.username)
     room.join(user)
-    res.json(room)
+    res.json(cleanRoom(room))
   })
   router.post('/:username/:roomId/restart', (req, res, next) => {
     const { username, roomId, } = req.params
@@ -41,7 +45,7 @@ function getRoutes(Game) {
     sockets.updateGame(room)
     sockets.updateUsers(roomId, room.users)
     sockets.updateCreator(roomId, room.creatorId)
-    res.json(room)
+    res.json(cleanRoom(room))
   })
   router.post('/join/:roomId/:username', (req, res, next) => {
     const { roomId, username } = req.params
@@ -49,7 +53,7 @@ function getRoutes(Game) {
     const room = Rooms.get(roomId)
     if (room) {
       room.join(user)
-      res.json(room)
+      res.json(cleanRoom(room))
     } else {
       res.status(404).send('Room not found')
     }
@@ -60,3 +64,25 @@ function getRoutes(Game) {
 module.exports = {
   getRoutes
 }
+
+function deletePropertyPath(obj, path) {
+
+  if (!obj || !path) {
+    return;
+  }
+
+  if (typeof path === 'string') {
+    path = path.split('.');
+  }
+
+  for (var i = 0; i < path.length - 1; i++) {
+
+    obj = obj[path[i]];
+
+    if (typeof obj === 'undefined') {
+      return;
+    }
+  }
+
+  delete obj[path.pop()];
+};
