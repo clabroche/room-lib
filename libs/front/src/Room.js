@@ -46,6 +46,13 @@ class Room {
     const { data: room } = await api.instance.post(`/api/rooms/join/${roomId}/${username}`)
     if (room) return new this(room)
   }
+  static async restart(username, roomId) {
+    await api.instance.post(`/api/rooms/${username}/${roomId}/restart`)
+  }
+
+  async restart(username) {
+    return Room.restart(username, this.id)
+  }
 }
 
 export default Room

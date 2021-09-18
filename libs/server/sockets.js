@@ -34,7 +34,7 @@ module.exports = {
     this.io.to(roomId).emit('update:users', users)
   },
   updateGame(room) {
-    this.io.to(room.id).emit('update:game', room.game)
+    this.io.to(room.id).emit('update:game', room.clean().game)
   },
   updateCreator(roomId, creatorId) {
     this.io.to(roomId).emit('update:creatorId', creatorId)

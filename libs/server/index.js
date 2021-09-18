@@ -2,7 +2,7 @@ module.exports = {
   controllers: {
     /** @type {'/:username/:roomId'} */
     roomBaseUrl: '/:username/:roomId',
-    room: require('./controllers/room')
+    routes: require('./controllers/room'),
   },
   models: {
     User: require('./models/User'),
